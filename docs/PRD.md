@@ -369,6 +369,7 @@ users ──< articles ──< comments
 - 탭: My Articles / Favorited Articles, 글 미리보기 + 페이지네이션
 
 ### 6.3 상태 및 인증 처리
+- 서버 데이터(글, 댓글, 프로필, 태그 등)는 TanStack Query로 조회·캐싱하고, 변경(mutation) 후 관련 쿼리를 무효화해 화면을 갱신한다. 전역 Context는 로그인 사용자 정보에만 사용한다.
 - JWT 토큰은 `localStorage`에 저장하고, 앱 시작 시 `GET /api/user`로 세션을 복원한다.
 - 모든 인증 요청에 `Authorization: Token <jwt>` 헤더를 자동 첨부한다.
 - 401 응답 시 토큰을 삭제하고 로그인 페이지로 이동한다.
@@ -388,7 +389,9 @@ users ──< articles ──< comments
 | **반응형** | 모바일·태블릿·데스크톱에서 사용 가능해야 한다. |
 | **테스트** | 최소 1개 이상의 단위 테스트(공식 기대사항). 권장: 핵심 핸들러 테스트 + 공식 Postman/API 테스트 컬렉션 통과. |
 | **문서화** | README에 설치·실행 방법을 명시한다. |
-| **의존성** | 사용하는 프레임워크/라이브러리는 GitHub 스타 300개 이상의 검증된 것을 사용한다. |
+| **의존성** | 표준 라이브러리를 우선 사용하고, 외부 프레임워크/라이브러리는 꼭 필요할 때만 GitHub 스타 300개 이상의 검증된 것을 사용한다. |
+| **관찰성** | 백엔드·프론트엔드 개발 서버 로그를 `logs/` 폴더에 파일로 남겨, 사람과 AI 에이전트가 모두 로그로 문제를 진단할 수 있어야 한다. |
+| **실행 환경** | 모든 서비스는 Docker 컨테이너로 실행하며, `make dev` 한 번으로 전체 개발 환경이 뜬다. |
 
 ---
 
@@ -458,7 +461,7 @@ users ──< articles ──< comments
 
 | 단계 | 범위 | 완료 기준 |
 | --- | --- | --- |
-| **M1. 프로젝트 설정** | 폴더 구조, Makefile, Docker Compose, DB 마이그레이션 | `make dev`로 빈 백엔드/프론트엔드 실행 |
+| **M1. 프로젝트 설정** | 폴더 구조, Makefile, Docker Compose, DB 마이그레이션 | `make dev`로 Docker Compose 컨테이너(backend, frontend)가 기동되고, SQLite 파일이 볼륨에 유지되며, `logs/`에 로그 파일이 생성됨 |
 | **M2. 백엔드 MVP** | 인증·사용자 → 프로필/팔로우 → 게시글/좋아요/태그 → 댓글, CORS·에러 처리 | 19개 엔드포인트 구현, 공식 API 테스트 통과 |
 | **M3. 프론트엔드 MVP** | 레이아웃, 인증 페이지, 홈, 글 상세, 에디터, 프로필, 설정 | 모든 라우트 동작, 사용자 스토리 US-01~11 수행 가능 |
 | **M4. 통합 및 테스트** | 프론트-백엔드 연동, E2E 점검, 문서 정리 | 수용 기준(10장) 전체 충족 |
@@ -497,3 +500,4 @@ users ──< articles ──< comments
 - [프론트엔드 템플릿](https://realworld-docs.netlify.app/specifications/frontend/templates/)
 - [프론트엔드 라우팅](https://realworld-docs.netlify.app/specifications/frontend/routing/)
 - [RealWorld GitHub](https://github.com/gothinkster/realworld) / [라이브 데모](https://demo.realworld.io/)
+- [Armin Ronacher — Agentic Coding Recommendations](https://lucumr.pocoo.org/2025/6/12/agentic-coding/) (기술 스택 선정 근거)
